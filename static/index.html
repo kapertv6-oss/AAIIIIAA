@@ -1,152 +1,211 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hakka AI | ZZZ Style</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        :root { --neon-orange: #ff7b00; }
-        body { background-color: #0b0d11; color: white; font-family: 'Inter', sans-serif; overflow: hidden; }
-        .zzz-card { background: #14171d; border: 1px solid #1f2329; transition: 0.2s; cursor: pointer; }
-        .zzz-card:active { transform: scale(0.92); border-color: var(--neon-orange); }
-        .neon-text { color: var(--neon-orange); text-shadow: 0 0 8px rgba(255,123,0,0.4); }
-        .neon-btn { background: var(--neon-orange); color: black; font-weight: 900; box-shadow: 0 0 15px rgba(255,123,0,0.3); }
-        .hide-scroll::-webkit-scrollbar { display: none; }
-        .fade-in { animation: fadeIn 0.2s ease-out forwards; }
-        @keyframes fadeIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
-        .typing-dot { width: 3px; height:3px; background: var(--neon-orange); border-radius:50%; display:inline-block; animation:bounce 1.4s infinite ease-in-out both; }
-        @keyframes bounce { 0%,80%,100% {transform:translateY(0);} 40% {transform:translateY(-4px);} }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Hakka AI | Z-Interface</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://telegram.org"></script>
+<style>
+:root { --neon-orange: #ff7b00; }
+body { background-color: #0b0d11; color: white; font-family: 'Inter', sans-serif; overflow: hidden; margin: 0; }
+
+.zzz-card { background: #14171d; border: 1px solid #1f2329; transition: 0.2s; cursor: pointer; position: relative; }
+.zzz-card:active { transform: scale(0.92); border-color: var(--neon-orange); box-shadow: 0 0 15px rgba(255,123,0,0.4); }
+
+.name-tag { background: rgba(0,0,0,0.25); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.neon-text { color: var(--neon-orange); text-shadow: 0 0 8px rgba(255,123,0,0.4); }
+.neon-btn { background: var(--neon-orange); color: #000; font-weight: 900; box-shadow: 0 0 15px rgba(255,123,0,0.3); }
+
+.hide-scroll::-webkit-scrollbar { display: none; }
+.fade-in { animation: fadeIn 0.2s ease-out forwards; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+
+.typing-dot { width:4px; height:4px; background:var(--neon-orange); border-radius:50%; display:inline-block; animation:bounce 1.4s infinite ease-in-out both; }
+.typing-dot:nth-child(2) { animation-delay:0.2s; }
+.typing-dot:nth-child(3) { animation-delay:0.4s; }
+@keyframes bounce { 0%,80%,100%{transform:translateY(0);} 40%{transform:translateY(-4px);} }
+</style>
 </head>
 <body class="antialiased">
 
-<!-- Главный экран -->
-<div id="home-screen" class="h-screen flex flex-col p-4 overflow-y-auto">
-    <header class="flex flex-col mb-5">
-        <h1 class="text-2xl font-black italic neon-text uppercase tracking-tighter">HAKKA AI</h1>
-        <p class="text-[7px] text-slate-500 uppercase tracking-[0.4em]">Нейросеть нового поколения</p>
-    </header>
+<!-- ЭКРАН ХОЛЛ -->
+<div id="home-screen" class="h-screen flex flex-col p-5 overflow-y-auto">
+<header class="flex justify-between items-center mb-6">
+<div>
+<h1 class="text-2xl font-black italic neon-text uppercase tracking-tighter">HAKKA AI</h1>
+<p class="text-[7px] text-slate-500 uppercase tracking-[0.4em]">Z-NEURAL CORE v1.6</p>
+</div>
+<button onclick="toggleProfile(true)" class="w-11 h-11 rounded-full border-2 border-orange-500/50 overflow-hidden bg-slate-800">
+<img id="header-user-avatar" src="" class="w-full h-full object-cover">
+</button>
+</header>
 
-    <div class="grid grid-cols-4 gap-2">
-        <div class="zzz-card rounded-xl overflow-hidden" onclick="selectCharacter('Макима','https://i.pinimg.com/236x/02/ab/cd/02abcd236.jpg')">
-            <img src="https://i.pinimg.com/236x/02/ab/cd/02abcd236.jpg" class="aspect-square object-cover opacity-80">
-            <div class="p-1.5 absolute bottom-0 w-full bg-gradient-to-t from-black">
-                <div class="font-black text-[10px] uppercase italic truncate leading-none">Макима</div>
-            </div>
-        </div>
-
-        <div class="zzz-card rounded-xl overflow-hidden" onclick="selectCharacter('Риас Гремори','https://i.pinimg.com/236x/11/aa/bb/11aabb236.jpg')">
-            <img src="https://i.pinimg.com/236x/11/aa/bb/11aabb236.jpg" class="aspect-square object-cover opacity-80">
-            <div class="p-1.5 absolute bottom-0 w-full bg-gradient-to-t from-black">
-                <div class="font-black text-[10px] uppercase italic truncate leading-none text-pink-500">Риас</div>
-            </div>
-        </div>
-    </div>
+<div class="grid grid-cols-3 gap-3">
+<div class="zzz-card rounded-2xl overflow-hidden aspect-[3/4]" onclick="selectCharacter('Макима','https://i.pinimg.com')">
+<img src="https://i.pinimg.com" class="w-full h-full object-cover">
+<div class="absolute bottom-0 w-full name-tag py-2.5 px-1 border-t border-white/5">
+<div class="font-black text-[14px] uppercase italic truncate text-center tracking-tighter">Макима</div>
+</div>
+</div>
+<div class="zzz-card rounded-2xl overflow-hidden aspect-[3/4]" onclick="selectCharacter('Риас Гремори','https://i.pinimg.com')">
+<img src="https://i.pinimg.com" class="w-full h-full object-cover">
+<div class="absolute bottom-0 w-full name-tag py-2.5 px-1 border-t border-white/5">
+<div class="font-black text-[14px] uppercase italic truncate text-center tracking-tighter text-red-500">Риас</div>
+</div>
+</div>
+<div class="zzz-card rounded-2xl overflow-hidden aspect-[3/4]" onclick="selectCharacter('Эллен Джо','https://i.pinimg.com')">
+<img src="https://i.pinimg.com" class="w-full h-full object-cover">
+<div class="absolute bottom-0 w-full name-tag py-2.5 px-1 border-t border-white/5">
+<div class="font-black text-[14px] uppercase italic truncate text-center tracking-tighter text-cyan-400">Эллен</div>
+</div>
+</div>
+</div>
 </div>
 
-<!-- Чат -->
+<!-- ПРОФИЛЬ -->
+<div id="profile-screen" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/95 backdrop-blur-xl">
+<div class="zzz-card w-full max-w-xs rounded-3xl p-6 border-orange-500/40">
+<h2 class="text-xl font-black italic neon-text uppercase mb-6 text-center tracking-widest">Настройки Агента</h2>
+
+<div class="space-y-5">
+<div class="flex flex-col items-center">
+<label class="cursor-pointer group relative">
+<img id="profile-avatar-preview" src="" class="w-24 h-24 rounded-full border-4 border-orange-500 object-cover shadow-2xl">
+<div class="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">📸</div>
+<input type="file" id="avatar-input" class="hidden" accept="image/*" onchange="updateAvatar(this)">
+</label>
+<div class="mt-3 text-[9px] text-slate-500 uppercase font-bold tracking-widest">TG-ID: <span id="tg-id" class="text-white">---</span></div>
+</div>
+
+<div>
+<label class="text-[10px] text-orange-500 uppercase font-black ml-1">Твой позывной</label>
+<input id="user-nickname" type="text" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 mt-1 outline-none focus:border-orange-500 text-sm">
+</div>
+
+<div>
+<label class="text-[10px] text-orange-500 uppercase font-black ml-1">Твой пол</label>
+<select id="user-gender" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 mt-1 outline-none text-sm">
+<option value="агент">Не указан</option>
+<option value="парень">Мужской</option>
+<option value="девушка">Женский</option>
+</select>
+</div>
+
+<button onclick="saveProfile()" class="neon-btn w-full py-4 rounded-xl uppercase text-xs tracking-widest mt-2 active:scale-95 transition-transform">Сохранить данные</button>
+<button onclick="toggleProfile(false)" class="w-full text-slate-600 uppercase text-[9px] font-bold tracking-widest py-2">Назад в хаб</button>
+</div>
+</div>
+</div>
+
+<!-- ЧАТ -->
 <div id="chat-screen" class="hidden fixed inset-0 flex flex-col bg-[#0b0d11] z-40">
-    <div class="p-4 flex items-center gap-3 border-b border-white/5 bg-[#14171d]/95">
-        <button onclick="exitChat()" class="neon-text text-3xl font-bold">❮</button>
-        <div id="chat-avatar-header" class="w-9 h-9 rounded-full border border-orange-500/30 overflow-hidden"></div>
-        <div id="chat-name-header" class="font-black text-[12px] italic uppercase"></div>
-    </div>
-
-    <div id="messages" class="flex-1 overflow-y-auto p-4 space-y-4 hide-scroll"></div>
-
-    <div class="p-4 bg-[#14171d]/90 border-t border-white/5 pb-10">
-        <div class="flex gap-2">
-            <input id="user-input" type="text" placeholder="Напиши что-нибудь..." class="flex-1 bg-black/50 border border-slate-800 rounded-2xl px-5 py-3 text-[11px] text-white outline-none focus:border-[#ff7b00]">
-            <button onclick="handleSend()" class="neon-btn w-12 h-12 rounded-2xl flex items-center justify-center">🚀</button>
-        </div>
-    </div>
+<div class="p-4 flex items-center gap-3 border-b border-white/5 bg-[#14171d]/95 backdrop-blur-md">
+<button onclick="exitChat()" class="neon-text text-2xl font-bold px-2 active:scale-75 transition-transform">❮</button>
+<div id="chat-avatar-header" class="w-10 h-10 rounded-full border border-orange-500/30 overflow-hidden bg-slate-800"></div>
+<div class="flex flex-col">
+<div id="chat-name-header" class="font-black text-[15px] italic uppercase tracking-tighter"></div>
+<div class="text-[7px] text-green-500 uppercase flex items-center gap-1">
+<span class="w-1 h-1 bg-green-500 rounded-full animate-pulse"></span> Линия связи активна
+</div>
+</div>
 </div>
 
-<!-- Скрипт -->
+<div id="messages" class="flex-1 overflow-y-auto p-4 space-y-4 hide-scroll pb-12"></div>
+
+<div class="p-4 bg-[#14171d]/90 border-t border-white/10 pb-8 backdrop-blur-md">
+<div class="flex gap-2">
+<input id="user-input" type="text" autocomplete="off" placeholder="Введите сообщение..." 
+class="flex-1 bg-black/50 border border-slate-800 rounded-2xl px-5 py-4 text-[13px] text-white outline-none focus:border-orange-500 transition-all">
+<button onclick="handleSend()" class="neon-btn w-14 h-14 rounded-2xl flex items-center justify-center active:scale-90 transition-all">
+<svg viewBox="0 0 24 24" class="w-6 h-6 fill-current"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+</button>
+</div>
+</div>
+</div>
+
 <script>
-let currentActiveChar = {name:'', img:''};
-let userAvatarUrl = "https://ui-avatars.com";
+// --- ПОЛЬЗОВАТЕЛЬ ---
+let userData = {name:'Новичок', gender:'агент', avatar:'https://ui-avatars.com', tgId:'Unknown'};
+function initUser() {
+const saved = localStorage.getItem('hakka_user_v2'); if(saved) userData = JSON.parse(saved);
+if(window.Telegram && window.Telegram.WebApp) {
+const tg = window.Telegram.WebApp;
+if(tg.initDataUnsafe && tg.initDataUnsafe.user) {
+userData.tgId = tg.initDataUnsafe.user.id;
+if(!saved) userData.name = tg.initDataUnsafe.user.first_name;
+}}
+document.getElementById('tg-id').innerText=userData.tgId;
+document.getElementById('user-nickname').value=userData.name;
+document.getElementById('user-gender').value=userData.gender;
+document.getElementById('header-user-avatar').src=userData.avatar;
+document.getElementById('profile-avatar-preview').src=userData.avatar;
+}
+function toggleProfile(show){document.getElementById('profile-screen').classList.toggle('hidden',!show);}
+function updateAvatar(input){if(input.files && input.files[0]){const reader=new FileReader();reader.onload=(e)=>{userData.avatar=e.target.result;document.getElementById('profile-avatar-preview').src=e.target.result;};reader.readAsDataURL(input.files[0]);}}
+function saveProfile(){userData.name=document.getElementById('user-nickname').value||'Proxy';userData.gender=document.getElementById('user-gender').value;document.getElementById('header-user-avatar').src=userData.avatar;localStorage.setItem('hakka_user_v2',JSON.stringify(userData));toggleProfile(false);}
 
-// Выбор персонажа
+// --- ЧАТ ---
+let currentActiveChar={name:'',img:''};
 function selectCharacter(name,img){
-    currentActiveChar={name,img};
-    document.getElementById('home-screen').classList.add('hidden');
-    document.getElementById('chat-screen').classList.remove('hidden');
-    document.getElementById('chat-name-header').innerText=name;
-    document.getElementById('chat-avatar-header').innerHTML=`<img src="${img}" class="w-full h-full object-cover">`;
-    handleSendSystem(`Привет! Я ${name}. Чем займемся сегодня?`);
+currentActiveChar={name,img};
+document.getElementById('home-screen').classList.add('hidden');
+document.getElementById('chat-screen').classList.remove('hidden');
+document.getElementById('chat-name-header').innerText=name;
+document.getElementById('chat-avatar-header').innerHTML=`<img src="${img}" class="w-full h-full object-cover">`;
+document.getElementById('messages').innerHTML="";
+addAiMessage(`[СИСТЕМА]: Связь установлена. Ты на линии с ${name}. Она знает, что ты ${userData.gender} по имени ${userData.name}.`);
 }
+function exitChat(){document.getElementById('chat-screen').classList.add('hidden');document.getElementById('home-screen').classList.remove('hidden');}
 
-// Выход из чата
-function exitChat(){
-    document.getElementById('chat-screen').classList.add('hidden');
-    document.getElementById('home-screen').classList.remove('hidden');
-    document.getElementById('messages').innerHTML="";
-}
-
-// Отправка системного сообщения
-async function handleSendSystem(text){
-    await handleSendGeneric(text);
-}
-
-// Отправка пользовательского сообщения
+// --- Готово для Render/TG ---
 async function handleSend(){
-    const input=document.getElementById('user-input');
-    const text=input.value.trim();
-    if(!text) return;
-    input.value="";
-    await handleSendGeneric(text, true);
+const input=document.getElementById('user-input'); const text=input.value.trim(); if(!text) return;
+input.value=""; addUserMessage(text); showTypingIndicator();
+try{
+const SERVER_URL="https://aaiiiiaa.onrender.com/chat-stream"; // <--- сюда публичный URL сервера
+const response=await fetch(`${SERVER_URL}?message=${encodeURIComponent(text)}&character=${encodeURIComponent(currentActiveChar.name)}`);
+const reader=response.body.getReader();
+const decoder=new TextDecoder(); let aiMsg="";
+while(true){
+const {done,value}=await reader.read(); if(done) break; aiMsg+=decoder.decode(value);
+const lastMsg=document.getElementById('messages').querySelector('.ai-temp');
+if(lastMsg) lastMsg.innerText=aiMsg; else addAiMessage(aiMsg,true);
+}
+}catch(error){removeTypingIndicator(); addAiMessage("Ошибка: не удалось подключиться к ядру (Python).",false); console.error(error);}
 }
 
-// Универсальная функция отправки сообщений
-async function handleSendGeneric(text, isUser=false){
-    const msgBox=document.getElementById('messages');
-    const aiMsgId="ai-"+Date.now();
-
-    if(isUser){
-        msgBox.innerHTML+=`
-        <div class="flex items-start justify-end gap-2 fade-in">
-            <div class="neon-btn px-3 py-2 rounded-2xl rounded-tr-none max-w-[75%] text-[11px] leading-relaxed shadow-md">${text}</div>
-            <img src="${userAvatarUrl}" class="w-7 h-7 rounded-full border border-orange-500/50">
-        </div>`;
-        msgBox.scrollTo({top:msgBox.scrollHeight, behavior:'smooth'});
-    }
-
-    // Создаем AI-пузырь
-    msgBox.innerHTML+=`
-        <div id="${aiMsgId}" class="flex items-start gap-2 fade-in">
-            <img src="${currentActiveChar.img}" class="w-7 h-7 rounded-full border border-orange-500/30">
-            <div class="bg-[#1a1d23] px-3 py-2 rounded-2xl rounded-tl-none border border-slate-800 min-w-[50px] text-[11px] leading-relaxed italic text-slate-200">
-                <div class="flex gap-1.5 py-2"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>
-            </div>
-        </div>`;
-    msgBox.scrollTo({top:msgBox.scrollHeight, behavior:'smooth'});
-
-    try{
-        const response=await fetch(`/chat-stream?message=${encodeURIComponent(text)}&character=${encodeURIComponent(currentActiveChar.name)}`);
-        const reader=response.body.getReader();
-        const decoder=new TextDecoder();
-        const aiBubble=document.getElementById(aiMsgId).querySelector('div:last-child');
-        aiBubble.innerHTML=`<div class="flex gap-1.5 py-2"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
-        let first = true;
-
-        while(true){
-            const {done,value}=await reader.read();
-            if(done) break;
-            const chunkText = decoder.decode(value);
-            if(first){ aiBubble.innerHTML=""; first=false; }
-            aiBubble.innerText += chunkText || "*ИИ пока не отвечает*";
-            msgBox.scrollTo({top:msgBox.scrollHeight, behavior:'auto'});
-        }
-    }catch(err){
-        const aiBubble=document.getElementById(aiMsgId).querySelector('div:last-child');
-        aiBubble.innerText="*ИИ пока не отвечает*";
-    }
+function addUserMessage(text){
+const msgBox=document.getElementById('messages');
+msgBox.innerHTML+=`<div class="flex items-start justify-end gap-2 fade-in">
+<div class="neon-btn px-4 py-2 rounded-2xl rounded-tr-none max-w-[85%] text-[13px] leading-relaxed shadow-lg">${text}</div>
+<img src="${userData.avatar}" class="w-8 h-8 rounded-full border border-orange-500/40 object-cover"></div>`;
+scrollToBottom();
 }
 
-// Enter для отправки
-document.getElementById('user-input').addEventListener('keypress', (e) => { if(e.key==='Enter') handleSend(); });
+function addAiMessage(text,isTemp=false){
+const msgBox=document.getElementById('messages');
+const className=isTemp?'ai-temp':'';
+msgBox.innerHTML+=`<div class="flex items-start gap-2 fade-in">
+<img src="${currentActiveChar.img}" class="w-9 h-9 rounded-full border border-orange-500/30 object-cover">
+<div class="bg-[#1a1d23] px-4 py-3 rounded-2xl rounded-tl-none border border-slate-800 max-w-[85%] text-[13px] leading-relaxed italic text-slate-200 shadow-inner ${className}">${text}</div></div>`;
+scrollToBottom();
+}
+
+function showTypingIndicator(){
+const msgBox=document.getElementById('messages');
+const indicator=document.createElement('div');
+indicator.id='typing-indicator';
+indicator.className='flex items-start gap-2 fade-in';
+indicator.innerHTML=`<img src="${currentActiveChar.img}" class="w-9 h-9 rounded-full border border-orange-500/30 object-cover">
+<div class="bg-[#1a1d23] px-5 py-4 rounded-2xl rounded-tl-none border border-slate-800"><div class="flex gap-1.5"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div></div>`;
+msgBox.appendChild(indicator); scrollToBottom();
+}
+function removeTypingIndicator(){const el=document.getElementById('typing-indicator'); if(el) el.remove();}
+function scrollToBottom(){const msgBox=document.getElementById('messages'); msgBox.scrollTo({top:msgBox.scrollHeight,behavior:'smooth'});}
+document.getElementById('user-input').addEventListener('keypress',(e)=>{if(e.key==='Enter') handleSend();});
+
+initUser();
 </script>
 
 </body>
