@@ -5,6 +5,7 @@ import g4f
 
 app = FastAPI()
 
+# разрешаем запросы с сайта
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -25,10 +26,11 @@ async def chat(req: ChatRequest):
 
     prompt = f"""
 Ты персонаж {req.character}.
-Пользователь: {req.userName}.
-Пол пользователя: {req.userGender}.
 
-Сообщение пользователя:
+Пользователь: {req.userName}
+Пол пользователя: {req.userGender}
+
+Сообщение:
 {req.message}
 
 Отвечай как {req.character}.
