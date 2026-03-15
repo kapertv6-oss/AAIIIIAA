@@ -34,7 +34,7 @@ body { background-color: #0b0d11; color: white; font-family: 'Inter', sans-serif
 <header class="flex justify-between items-center mb-6">
 <div>
 <h1 class="text-2xl font-black italic neon-text uppercase tracking-tighter">HAKKA AI</h1>
-<p class="text-[7px] text-slate-500 uppercase tracking-[0.4em]">Z-NEURAL CORE v1.6</p>
+<p class="text-[7px] text-slate-500 uppercase tracking-[0.4em]">Общайся с AI Персонажами!</p>
 </div>
 <button onclick="toggleProfile(true)" class="w-11 h-11 rounded-full border-2 border-orange-500/50 overflow-hidden bg-slate-800">
 <img id="header-user-avatar" src="" class="w-full h-full object-cover">
@@ -66,7 +66,7 @@ body { background-color: #0b0d11; color: white; font-family: 'Inter', sans-serif
 <!-- ПРОФИЛЬ -->
 <div id="profile-screen" class="hidden fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/95 backdrop-blur-xl">
 <div class="zzz-card w-full max-w-xs rounded-3xl p-6 border-orange-500/40">
-<h2 class="text-xl font-black italic neon-text uppercase mb-6 text-center tracking-widest">Настройки Агента</h2>
+<h2 class="text-xl font-black italic neon-text uppercase mb-6 text-center tracking-widest">Настройки Профиля</h2>
 
 <div class="space-y-5">
 <div class="flex flex-col items-center">
@@ -93,7 +93,7 @@ body { background-color: #0b0d11; color: white; font-family: 'Inter', sans-serif
 </div>
 
 <button onclick="saveProfile()" class="neon-btn w-full py-4 rounded-xl uppercase text-xs tracking-widest mt-2 active:scale-95 transition-transform">Сохранить данные</button>
-<button onclick="toggleProfile(false)" class="w-full text-slate-600 uppercase text-[9px] font-bold tracking-widest py-2">Назад в хаб</button>
+<button onclick="toggleProfile(false)" class="w-full text-slate-600 uppercase text-[9px] font-bold tracking-widest py-2">Назад в меню</button>
 </div>
 </div>
 </div>
@@ -106,7 +106,7 @@ body { background-color: #0b0d11; color: white; font-family: 'Inter', sans-serif
 <div class="flex flex-col">
 <div id="chat-name-header" class="font-black text-[15px] italic uppercase tracking-tighter"></div>
 <div class="text-[7px] text-green-500 uppercase flex items-center gap-1">
-<span class="w-1 h-1 bg-green-500 rounded-full animate-pulse"></span> Линия связи активна
+<span class="w-1 h-1 bg-green-500 rounded-full animate-pulse"></span> В сети
 </div>
 </div>
 </div>
@@ -154,7 +154,7 @@ document.getElementById('chat-screen').classList.remove('hidden');
 document.getElementById('chat-name-header').innerText=name;
 document.getElementById('chat-avatar-header').innerHTML=`<img src="${img}" class="w-full h-full object-cover">`;
 document.getElementById('messages').innerHTML="";
-addAiMessage(`[СИСТЕМА]: Связь установлена. Ты на линии с ${name}. Она знает, что ты ${userData.gender} по имени ${userData.name}.`);
+addAiMessage(`*мягко улыблнулсь* Здравствуй я ${name}! Я знаю что ты ${userData.gender} по имени ${userData.name}.`);
 }
 function exitChat(){document.getElementById('chat-screen').classList.add('hidden');document.getElementById('home-screen').classList.remove('hidden');}
 
