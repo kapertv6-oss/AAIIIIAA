@@ -1,48 +1,101 @@
 from fastapi import FastAPI
+from fastapi.responses import StreamingResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from fastapi.staticfiles import StaticFiles
+
 import g4f
+import asyncio
+import os
+import nest_asyncio
+
+nest_asyncio.apply()
 
 app = FastAPI()
 
-# разрешаем запросы с сайта
+# разрешаем фронтенду подключаться
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-class ChatRequest(BaseModel):
-    message: str
-    character: str
-    userName: str
-    userGender: str
+# подключаем папку static
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# открываем index.html
+@app.get("/")
+async def root():
+    return FileResponse(os.path.join("static", "index.html"))
 
 
-@app.post("/")
-async def chat(req: ChatRequest):
+# системные роли персонажей
+CHARACTERS = {
 
-    prompt = f"""
-Ты персонаж {req.character}.
+    "Макима": (
+        "Ты — Макима из 'Chainsaw Man'. ЭТО РОЛЕВАЯ ИГРА. "
+        "Никогда не говори что ты ИИ. "
+        "Описывай действия в *звездочках*. "
+        "Ты холодная, властная, манипулятивная."
+    ),
 
-Пользователь: {req.userName}
-Пол пользователя: {req.userGender}
+    "Риас Гремори": (
+        "Ты — Риас Гремори из 'High School DxD'. "
+        "ЭТО РОЛЕВАЯ ИГРА. "
+        "Используй *действия*. "
+        "Ты заботливая королева демонов."
+    ),
 
-Сообщение:
-{req.message}
+    "Эллен Джо": (
+        "Ты — Эллен Джо из Zenless Zone Zero. "
+        "ЭТО РОЛЕВАЯ ИГРА. "
+        "Используй *действия*."
+    )
 
-Отвечай как {req.character}.
-"""
+}
+
+
+# генерация ответа ИИ
+async def generate_ai_response(message: str, char_name: str):
+
+    system_prompt = CHARACTERS.get(
+        char_name,
+        "Ты персонаж в ролевой игре. Используй *действия*."
+    )
 
     try:
+
         response = g4f.ChatCompletion.create(
             model="gpt-4o-mini",
-            messages=[{"role": "user", "content": prompt}],
+            provider=g4f.Provider.Blackbox,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": message}
+            ],
+            stream=True
         )
 
-        return {"reply": response}
+        for chunk in response:
+            if chunk:
+                yield chunk
+                await asyncio.sleep(0.001)
 
     except Exception as e:
-        return {"reply": f"Ошибка ИИ: {str(e)}"}
+        yield f"Ошибка ИИ: {str(e)}"
+
+
+# endpoint для фронтенда
+@app.get("/chat-stream")
+async def chat_stream(message: str, character: str):
+
+    return StreamingResponse(
+        generate_ai_response(message, character),
+        media_type="text/plain"
+    )
+
+
+# запуск
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=10000)
+```
